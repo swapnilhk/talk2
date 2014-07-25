@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Talk Home</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<link rel="stylesheet" href="../css/styles.css" media="screen" type="text/css" />
+<script>
+	$(document).ready(function(){
+		var server = io.connect("http://localhost:8080");
+		$('#chatform').submit(function(e){			
+			var message = $('#message').val();
+			socket.emit('message', message);
+		});
+	});
+	
+  var socket = io.connect('http://localhost');
+  socket.on('news', function (data) {
+    alert(data);
+    socket.emit('my other event', { my: 'data' });
+  });
+</script>
+</head>
+<body>
+	<div id="page-wrap">
+		<h2>Welcome to Chat Page</h2>
+		<a href="/logout">Logout</a><br>
+		<p id="name-area"></p>
+		<div id="chat-wrap"><div id="chat-area"></div></div>		
+		<form id="chatform">
+			<textarea id="message" id="sendie" maxlength = '100' placeholder="Write something.."></textarea>
+			<input type="submit" id="submit" value="SEND"/>
+		</form>
+	</div>
+	
+</body>
+
+</html>

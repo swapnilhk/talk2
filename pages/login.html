@@ -5,28 +5,19 @@
 		<title>Login</title>
 		<link type="text/css" rel="stylesheet" href="../css/login.css"/>		
 		<script src="js/validate.js"></script>
+		<link rel='stylesheet' href='http://codepen.io/assets/libs/fullpage/jquery-ui.css'>
+	    <link rel="stylesheet" href="../css/styles.css" media="screen" type="text/css" />
 	</head>
-	<body>	
-		<p><%=server_message%></p><br/>
-		<form id="login_form" name="login_form" action="authenticate" method="post" onsubmit="return validateLogin()">
-			<table>
-				<tr>
-					<td>User Name</td>
-					<td><input id="username" name="username" type="text"></input></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td>Password</td>
-					<td><input id="password" name="password" type="password"></input></td>
-				</tr>
-				<tr>
-					<td colspan="2" align="center"><input type="submit" value="Login"></td>
-				<tr>
-				<tr>
-					<td colspan="2" align="center"><a href="register">Register</a></td>
-				<tr>
-			</table>
-		</form>
-	<body>		
+	<body>
+		<div class="login-card">
+		    <h1>Log-in</h1><br>
+		    <div style="color:red"><%=server_message%></div><br>
+			<form id="login_form" name="login_form" action="authenticate" method="post" onsubmit="return validateLogin()">
+				<input id="username" name="username" type="text" placeholder="Username"></input>
+				<input id="password" name="password" type="password" placeholder="Password"></input>
+				<input type="submit" value="Login" class="login login-submit">
+				<a href="register">Register</a>
+			</form>
+		</div>	
 	</body>	
 </html>

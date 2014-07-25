@@ -1,11 +1,18 @@
 var express = require('express');
 var session = require('express-session');
-var app = express();
 var bodyParser = require('body-parser');
+var path = require('path');
+var app = express();
+var server = require('http').Server(app);
+var socket = require('socket.io')(server);
+
+server.listen(8080);
 
 app.set('view engine', 'html');
 app.engine('html', require('ejs').renderFile);
 app.set('views', __dirname + '/pages');
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(session({
 	secret : 'talk',
 	cookie: { secure: true }
@@ -38,22 +45,22 @@ app.post('/authenticate', function(req, res){
 		  	connection.query('Select password, first_name, last_name FROM talk.user WHERE username = ?', req.body.username, function(err, result) {
 			if(!err){								
 				if(result == ""){
-					console.log(e);
-					res.render('login',{server_message:e});
+					var serv_msg = "Incorrect username or password";
+					console.log(err);
+					res.render('login',{server_message:serv_msg});
 				}
 				else{
 					connection.query('Select MD5(?) as passmd5', req.body.password, function(err, password) {
 						if(!err){
 							if(password[0].passmd5 == result[0].password){
-								console.log("Authentic user");						
+								console.log("Authentic user: "+result[0].first_name + " " + result[0].last_name);						
 								var ses = req.session
 								ses.user = result[0].first_name + " " + result[0].last_name;
 								ses.username = req.body.username;
-								console.log("sdfhskjhdfkjshkjfhkas-----"+ses.username);
-								var query = connection.query('Select uid, first_name, last_name FROM talk.user WHERE username != ?', ses.username, function(err, result) {
+								var query = connection.query('Select uid, first_name, last_name FROM talk.user WHERE username != ? ORDER BY first_name, last_name', ses.username, function(err, result) {
 									if(!err){
 										console.log(result);
-										res.render('home', {
+										res.render('home.ejs', {
 											user : req.session.user,
 											users : result
 										});
@@ -95,10 +102,30 @@ app.get('/register', function(req, res){
 });
 
 app.get('/logout', function(req, res){
+	console.log("sdgdfsgs->"+req.session.username);
 	req.session.destroy(function(err){
 		console.log(err);
 	});
 	res.render('login',{server_message:""});
 });
 
-app.listen(8090);
+app.get('/chat', function(req, res){
+	var ses = req.session;
+	console.log("99999999999->"+ses.username);
+	if(session.username == null || session.username == ""){
+		res.render('login', {server_message:'Session expired, please Log in'});
+	}
+	else	
+		res.render('chat');
+});
+
+//----------Chat related code
+
+socket.on('connection', function(client){	
+	var ses = req.session;
+	console.log("Connection Successful with " + ses.user);
+	socket.on('message', function (data) {
+	    console.log(data);
+  });
+});
+
