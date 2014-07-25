@@ -34,36 +34,58 @@ app.get('/login', function(req, res){
 });
 
 app.post('/broadcast', function(req, res){
-	console.log('Broadcast'+req.session.user);
+	console.log('Broadcast'+req.session.uid);
 	console.log(req.body);
 	var uid;
-	for(uid in req.body.qid){
+	for(uid in req.body.uid)
 		console.log(uid);
-		var mysql      = require('mysql');
-		var connection = mysql.createConnection({
-        	        host     : 'localhost',
-	                user     : 'talkuser',
-                	password : 'password',
-        	});
-		connection.connect(function(err) {
-
-	                if(!err){
-                        	console.log("Database connection successful");
-//                       	onnection.query('INSERT INTO shout VALUES(?,?)  = ?', req.body.username, function(err, result) {
-	                        if(!err){
-						
-
+	var mysql      = require('mysql');
+	var connection = mysql.createConnection({
+   	        host     : 'localhost',
+            user     : 'talkuser',
+           	password : 'password'
+   	});
+	connection.connect(function(err) {
+		if(!err){
+			console.log("Database connection successful");
+			var query = connection.query('INSERT INTO talk.msg(msg,sender) VALUES(?,?)', [req.body.broadcast_message, req.session.uid], function(err, result) {
+				if(!err){					
+					console.log("Query Successful");
+					for(var i in req.body.uid){
+						console.log("---%%%%%%%%%%%%------->"+req.body.uid[i]);
+					   	query = connection.query('INSERT INTO talk.shout(msg_id, reciever) VALUES(?,?)', [result.insertId, req.body.uid[i]], function(err, result) {
+							if(!err){
+								console.log("Query Successful");
+						 		console.log("Broadcast by "+req.session.user+" successful");
+								res.render('home.ejs', {
+									user : req.session.user,
+									users : req.session.users,
+									server_message : "Broadcast Successful"
+								});
+						   	}
+						   	else{
+						   		var serv_msg = "Something Wrong Happened";
+								console.log(serv_msg+" : "+err);
+								res.render('login',{server_message:serv_msg});
+							}
+						});						
+						console.log(query.sql);
+					}
 				}	
-			}
-		
-			else{
-                                var serv_msg = "Incorrect username or password";
-                                console.log(serv_msg);
-                                res.render('login',{server_message:serv_msg});
-               		}	
-		});
-	}
-		
+				else{
+			   		var serv_msg = "Something Wrong Happened";
+			        console.log(serv_msg+" : "+err);
+    			    res.render('login',{server_message:serv_msg});
+				}
+			});
+			console.log(query.sql);
+		}
+		else{
+	   		var serv_msg = "Something Wrong Happened";
+	        console.log(serv_msg);
+	        res.render('login',{server_message:serv_msg});
+        }	
+	});
 });
 
 app.post('/authenticate', function(req, res){
@@ -78,7 +100,7 @@ app.post('/authenticate', function(req, res){
 	connection.connect(function(err) {
 		if(!err){
 			console.log("Database connection successful");
-		  	connection.query('Select password, first_name, last_name FROM talk.user WHERE username = ?', req.body.username, function(err, result) {
+		  	connection.query('Select uid, password, first_name, last_name FROM talk.user WHERE username = ?', req.body.username, function(err, result) {
 			if(!err){								
 				if(result == ""){
 					var serv_msg = "Incorrect username or password";
@@ -91,15 +113,18 @@ app.post('/authenticate', function(req, res){
 							if(password[0].passmd5 == result[0].password){
 								console.log("Authentic user: "+result[0].first_name + " " + result[0].last_name);						
 								var ses = req.session
+								ses.uid = result[0].uid;
 								ses.user = result[0].first_name + " " + result[0].last_name;
 								ses.username = req.body.username;
-								console.log("------->"+ses.user);//TODO:remove this debug line
+								console.log("------->"+ses.uid);//TODO:remove this debug line
 								var query = connection.query('Select uid, first_name, last_name FROM talk.user WHERE username != ? ORDER BY first_name, last_name', ses.username, function(err, result) {
 									if(!err){
 										console.log(result);
+										ses.users = result;
 										res.render('home.ejs', {
-											user : req.session.user,
-											users : result
+											user : ses.user,
+											users : ses.users,
+											server_message : ""
 										});
 									}
 									else
@@ -149,10 +174,11 @@ app.get('/logout', function(req, res){
 
 
 app.get('/home', function(req, res){
-        res.render('home.ejs', {
-	        user : req.session.user,
-                users : result
-        });
+	res.render('home.ejs', {
+		user : req.session.user,
+		users : result,
+		server_message : ""
+	});
 });
 
 app.get('/chat', function(req, res){
