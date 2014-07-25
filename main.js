@@ -19,9 +19,9 @@ app.configure(function(){
 app.use(express.cookieParser());
 
 app.use(express.session({
-        secret : 'talk',
+        secret : 'talk'
         //cookie: { secure: true },
-        cookie: { maxAge: 60000 }
+        //cookie: { maxAge: 60000 }
 }));
 
 app.get('/', function(req, res){
@@ -34,11 +34,34 @@ app.get('/login', function(req, res){
 });
 
 app.post('/broadcast', function(req, res){
-	console.log('Broadcast');
+	console.log('Broadcast'+req.session.user);
 	console.log(req.body);
 	var uid;
 	for(uid in req.body.qid){
 		console.log(uid);
+		var mysql      = require('mysql');
+		var connection = mysql.createConnection({
+        	        host     : 'localhost',
+	                user     : 'talkuser',
+                	password : 'password',
+        	});
+		connection.connect(function(err) {
+
+	                if(!err){
+                        	console.log("Database connection successful");
+//                       	onnection.query('INSERT INTO shout VALUES(?,?)  = ?', req.body.username, function(err, result) {
+	                        if(!err){
+						
+
+				}	
+			}
+		
+			else{
+                                var serv_msg = "Incorrect username or password";
+                                console.log(serv_msg);
+                                res.render('login',{server_message:serv_msg});
+               		}	
+		});
 	}
 		
 });
@@ -70,6 +93,7 @@ app.post('/authenticate', function(req, res){
 								var ses = req.session
 								ses.user = result[0].first_name + " " + result[0].last_name;
 								ses.username = req.body.username;
+								console.log("------->"+ses.user);//TODO:remove this debug line
 								var query = connection.query('Select uid, first_name, last_name FROM talk.user WHERE username != ? ORDER BY first_name, last_name', ses.username, function(err, result) {
 									if(!err){
 										console.log(result);
@@ -91,7 +115,7 @@ app.post('/authenticate', function(req, res){
 						}
 						else{
 							console.log(e);
-						res.render('login',{server_message:e});
+							res.render('login',{server_message:e});
 						}
 					});
 				}
@@ -116,10 +140,10 @@ app.get('/register', function(req, res){
 
 app.get('/logout', function(req, res){
 	var ses = req.session;
-	console.log("Session Object->"+ses);
+	console.log("Session Object->"+ses.user);
 	ses.destroy(function(err){
 		console.log(err);
-	});
+	});	
 	res.render('login',{server_message:""});
 });
 
