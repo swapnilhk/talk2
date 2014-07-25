@@ -8,18 +8,15 @@
 <link rel="stylesheet" href="../css/styles.css" media="screen" type="text/css" />
 <script>
 	$(document).ready(function(){
-		var server = io.connect("http://localhost:8080");
+		var server = io.connect("http://swapnilhk.kd.io:8080");
+			alert("Connected to server");
 		$('#chatform').submit(function(e){			
 			var message = $('#message').val();
-			socket.emit('message', message);
+			server.emit('message', {message:message.text});
+			alert("emitted message"+message.text);
 		});
 	});
 	
-  var socket = io.connect('http://localhost');
-  socket.on('news', function (data) {
-    alert(data);
-    socket.emit('my other event', { my: 'data' });
-  });
 </script>
 </head>
 <body>

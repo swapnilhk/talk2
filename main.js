@@ -1,5 +1,4 @@
 var express = require('express');
-var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
 var app = express();
@@ -13,21 +12,35 @@ app.engine('html', require('ejs').renderFile);
 app.set('views', __dirname + '/pages');
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(session({
-	secret : 'talk',
-	cookie: { secure: true }
-}));
-
 app.configure(function(){
   app.use(express.bodyParser());
 });
 	
+app.use(express.cookieParser());
+
+app.use(express.session({
+        secret : 'talk',
+        //cookie: { secure: true },
+        cookie: { maxAge: 60000 }
+}));
+
 app.get('/', function(req, res){
     res.render('index',{firstname:'swapnil', lastname: 'kharabe'});
 });
 
+
 app.get('/login', function(req, res){
 	res.render('login',{server_message:""});
+});
+
+app.post('/broadcast', function(req, res){
+	console.log('Broadcast');
+	console.log(req.body);
+	var uid;
+	for(uid in req.body.qid){
+		console.log(uid);
+	}
+		
 });
 
 app.post('/authenticate', function(req, res){
@@ -102,30 +115,42 @@ app.get('/register', function(req, res){
 });
 
 app.get('/logout', function(req, res){
-	console.log("sdgdfsgs->"+req.session.username);
-	req.session.destroy(function(err){
+	var ses = req.session;
+	console.log("Session Object->"+ses);
+	ses.destroy(function(err){
 		console.log(err);
 	});
 	res.render('login',{server_message:""});
 });
 
+
+app.get('/home', function(req, res){
+        res.render('home.ejs', {
+	        user : req.session.user,
+                users : result
+        });
+});
+
 app.get('/chat', function(req, res){
 	var ses = req.session;
 	console.log("99999999999->"+ses.username);
-	if(session.username == null || session.username == ""){
-		res.render('login', {server_message:'Session expired, please Log in'});
-	}
-	else	
+//	if(session.username == null || session.username == ""){
+//		res.render('login', {server_message:'Session expired, please Log in'});
+//	}
+//	else	
 		res.render('chat');
 });
 
 //----------Chat related code
 
 socket.on('connection', function(client){	
-	var ses = req.session;
-	console.log("Connection Successful with " + ses.user);
-	socket.on('message', function (data) {
-	    console.log(data);
-  });
+	//var ses = req.session;
+	//console.log("Connection Successful with " + ses.user);
+	//socket.emit('message', "Hithere')
+	console.log("User connected to chat");
+	client.on('message', function (data) {
+		console.log("Data recieved from user");
+		console.log(data);
+  	});
 });
 

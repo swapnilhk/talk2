@@ -7,14 +7,18 @@
 </head>
 <body>
 	<div class="header"><h1>Welcome <%=user%></h1></div>
-	<a href="/logout">Logout</a><br>
-	<div class="content">
-	<%
+	<a href="/recieved_broadcasts">Recieved Brodcasts</a><a href="/sent_broadcast">Sent Broadcasts</a><a href="/threads">Threads</a><a href="/logout">Logout</a><a href="/logout">Logout</a><br>
+	<form id="home_form" name="home_form" onsubmit="return validateHome()" method="POST" action="/broadcast">
+  	    <div class="content">
+	    <%
 		var i;
 		for(i = 0; i < users.length; i++){
-			%><input type="checkbox" class="checkbox" value=<%=users[0].qid%>><%=users[i].first_name+" "+users[i].last_name%><br><%
+			%><input type="checkbox" class="checkbox" name="qid" value=<%=users[i].uid%> ><%=users[i].first_name+" "+users[i].last_name%><br><%
 		}
-	%>
+	    %>
+	    <input type="textarea" name="broadcast_message"/>
+	    <input type="submit" value="Broadcast"/>
+	</form>
 	</div>
 	<div class="footer">talk2</div>
 	
