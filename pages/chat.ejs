@@ -8,12 +8,18 @@
 <link rel="stylesheet" href="../css/styles.css" media="screen" type="text/css" />
 <script>
 	$(document).ready(function(){
+		var uid = "<%=uid%>";
+		var fuid = "<%=fuid%>";
+		var fname = "<%=fname%>";
+		var tid = "<%=tid%>";
 		var server = io.connect("http://localhost:8080");
+		//alert("sdq");
 		
 		$('#sendchat').click(function(){	
 			var message = $('#message').val();
-			$("#chat-area").append('<p>'+message+'</p>');
-			server.emit('message', {'message':message});
+			$("#chat-area").append('<p>You: '+message+'</p>');
+			server.emit('message', {'message':message, 'uid': uid, 'fuid': fuid, 'tid': tid});
+			//alert("message: "+message);
 		});
 	});	
 </script>
@@ -25,6 +31,12 @@
 		<p id="name-area"></p>
 		<div id="chat-wrap">
 			<div id="chat-area">
+			
+			<%
+				for(i in messages){
+					%><p><%=messages[i].first_name+" "+messages[i].last_name+" : "+messages[i].msg%></p><%
+				}
+			%>
 			
 			</div>
 			

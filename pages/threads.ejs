@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Chat</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<link rel="stylesheet" href="../css/styles.css" media="screen" type="text/css" />
+</head>
+<body>
+	<div class="header"><h1>You have following Threads</h1></div>
+	<a href="/recieved_broadcasts">Recieved Brodcasts</a><a href="/sent_broadcast">Sent Broadcasts</a><a href="/threads">Threads</a><a href="/logout">Logout</a><br>
+    <div class="content">
+	    <div class="header"><h2>You Initiated Following Threads</h2></div>
+    	<%
+			var i;
+			for(i in result){
+				%><a href=<%="/thread?tid="+result[i].tid+"&uid="+result[i].uid%> class="thread_item"><%=result[i].first_name+" "+result[i].last_name%></a><br><%
+			}
+    	%>
+		</div>
+	
+		<div class="header"><h2>You Responded to the Following Threads</h2></div>
+    	<%
+			var i;
+			for(i in result1){
+				%><a href=<%="/thread?tid="+result1[i].tid+"&uid="+result1[i].uid%> class="thread_item"><%=result1[i].first_name+" "+result1[i].last_name%></a><br><%
+			}
+    	%>
+		</div>
+	</div>
+	<div class="footer">talk2</div>
+	</div>
+	
+</body>
+
+</html>

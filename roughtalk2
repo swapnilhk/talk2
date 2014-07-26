@@ -1,0 +1,72 @@
+//var server = io.connect("http://localhost:8080");
+		alert("sdq");
+		$('#sendchat').click(function(){	
+			alert("sdq");		
+			var message = $('#message').val().text;
+			$('#chat-area').append('<p>'+message'</p>');
+			server.emit('message', {message:message});	
+			alert("sd");		
+		});
+		
+		/*server.on('message', function(data){
+			$('#chat-area').append('<div>'+data+'</div>);
+		});*/
+		
+		
+								SELECT sender, reciever\
+						FROM msg, shout\
+						WHERE msg.msg_id = shout.msg_id\
+						AND msg.msg_id = ?,'
+						
+SELECT shout.reciever
+FROM talk.msg, talk.shout
+WHERE msg.msg_id = shout.msg_id
+AND msg.sender = 1
+AND msg_id = '19';
+
+SELECT sender, shout.reciever, shout.msg_id
+FROM talk.msg, talk.shout
+WHERE msg.msg_id = shout.msg_id
+AND msg.sender = 3
+AND msg.msg_id = '17'
+
+
+SELECT shout.reciever
+FROM talk.msg, talk.shout
+WHERE msg.msg_id = shout.msg_id
+AND msg.sender = '1'
+AND msg.msg_id = '18'
+
+SELECT uid, first_name, last_name, msg.msg_id, msg.create_ts as ts
+FROM talk.user, talk.msg, talk.shout				WHERE user.uid = msg.sender AND msg.msg_id = shout.msg_id AND shout.reciever = 1 ORDER BY ts DESC
+
+
+
+	var mysql      = require('mysql');
+	var connection = mysql.createConnection({
+   	        host     : 'localhost',
+            user     : 'talkuser',
+           	password : 'password'
+   	});
+	connection.connect(function(err) {
+		if(!err){
+			console.log("Database connection successful");
+			var query = connection.query('INSERT INTO talk.msg(msg,sender,broadcast_flag) VALUES(?,?,1)', [req.body.broadcast_message, req.session.uid], function(err, result) {
+				if(!err){				
+					//TODO
+				}
+				else{
+			   		var serv_msg = "Something Wrong Happened";
+			        console.log(serv_msg+" : "+err);
+    			    res.render('login',{server_message:serv_msg});
+				}
+			});
+			console.log(query.sql);
+		}
+		else{
+	   		var serv_msg = "Something Wrong Happened";
+	        console.log(serv_msg);
+	        res.render('login',{server_message:serv_msg});
+        }	
+	});
+

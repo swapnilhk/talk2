@@ -1,16 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@page import="java.util.HashMap"%>
-<%@page import="java.util.Set" %>
-<%@page import="java.util.Iterator" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Registration</title>
-		<link type="text/css" rel="stylesheet" href="../css/register.css"/>		
-		<script src="js/validate.js"></script>
+		<link type="text/css" rel="stylesheet" href="../css/styles.css"/>		
+		<script src="../js/validate.js"></script>
+		<link rel='stylesheet' href='http://codepen.io/assets/libs/fullpage/jquery-ui.css'>
 	</head>	
 	<body>
+	  <div class="login-card" style="width:35%">
+	    <h1>Registration</h1><br>
 		<form id="registration_form" action="register" method="post" onsubmit="return validateRegistration()">
 			<table id="registration_table">
 				<tr>
@@ -33,30 +32,11 @@
 					<td>Last Name</td>
 					<td><input id="last_name" name="last_name" type="text" placeholder="Type your Last Name"/></td>
 				</tr>				
-				<tr>
-					<td>Security Question</td>
-					<td>
-						<select id="security_question" name="qid">
-							<%
-								HashMap<Integer, String> questions = (HashMap<Integer,String>)request.getAttribute("questions");
-								Set<Integer> s = questions.keySet();
-								Iterator<Integer> i = s.iterator();
-								while(i.hasNext()){
-									int k = i.next();
-									%><option value="<%= k%>"><%= questions.get(k)%></option><%		
-								}
-							%>
-						</select>
-					</td>
-				</tr>				
-				<tr>
-					<td>Answer</td>
-					<td><input id="answer" name="answer" type="text" placeholder="Type your answer"/></td>
-				</tr>				
 				<tr>				
 					<td colspan="2" align="center"><input type="submit" value="Register"></td>
 				<tr>
 			</table>
 		</form>
+	  </div>
 	<body>
 </html>
