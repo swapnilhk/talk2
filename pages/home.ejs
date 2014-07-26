@@ -8,7 +8,18 @@
 <body>
 	<div class="header"><h1>Welcome <%=user%></h1></div>
 	<div><h2><%=server_message%></h2></div>
-	<a href="/recieved_broadcasts">Recieved Brodcasts</a><a href="/sent_broadcast">Sent Broadcasts</a><a href="/threads">Threads</a><a href="/logout">Logout</a><br>
+
+		<div id='cssmenu'>
+		<ul>
+			<li class='active'><a href="#">Broadcast</a></li>
+			<li><a href="/recieved_broadcasts">Recieved Brodcasts</a></li>
+			<li><a href="/threads">Threads</a></li>
+			<li><a href="/logout">Logout</a></li>
+		</div>
+
+
+
+
 	<form id="home_form" name="home_form" onsubmit="return validateHome()" method="POST" action="/broadcast">
   	    <div class="content">
 	    <%

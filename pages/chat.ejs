@@ -21,13 +21,25 @@
 			server.emit('message', {'message':message, 'uid': uid, 'fuid': fuid, 'tid': tid});
 			//alert("message: "+message);
 		});
+				
 	});	
 </script>
 </head>
 <body>
-	<div id="page-wrap">
-		<h2>Welcome to Chat Page</h2>
-		<a href="/recieved_broadcasts">Recieved Brodcasts</a><a href="/sent_broadcast">Sent Broadcasts</a><a href="/threads">Threads</a><a href="/logout">Logout</a><br>
+
+		<div class="header"><h2>Welcome to Chat Page</h2></div>
+		
+		<div id='cssmenu'>
+		<ul>
+			<li><a href="/authinticate">Broadcast</a></li>
+			<li><a href="/recieved_broadcasts">Recieved Brodcasts</a></li>
+			<li><a href="/threads">Threads</a></li>
+			<li><a href="/logout">Logout</a></li>
+		</div>
+
+		<div id="page-wrap">
+		
+		
 		<p id="name-area"></p>
 		<div id="chat-wrap">
 			<div id="chat-area">
@@ -42,7 +54,7 @@
 			
 		</div>		
 		<div id="chatform">
-			<textarea id="message" id="sendie" maxlength = '100' placeholder="Write something.."></textarea>
+			<input type="text" id="message" id="sendie" maxlength = '100' placeholder="Write something.."></textarea>
 			<button id="sendchat">Send</button>
 		</div>
 	</div>

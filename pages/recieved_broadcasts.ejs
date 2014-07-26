@@ -7,15 +7,23 @@
 </head>
 <body>
 	<div class="header"><h1>You have following Broadcast Messages</h1></div>
-	<a href="/recieved_broadcasts">Recieved Brodcasts</a><a href="/sent_broadcast">Sent Broadcasts</a><a href="/threads">Threads</a><a href="/logout">Logout</a><br>
+	<div id='cssmenu'>
+		<ul>
+			<li><a href="/home">Broadcast</a></li>
+			<li class='active'><a href="#">Recieved Brodcasts</a></li>
+			<li><a href="/threads">Threads</a></li>
+			<li><a href="/logout">Logout</a></li>
+		</div>
 
-    <div class="content">
+    <div class="customlist">
+    <ul>
     <%
 		var i;
 		for(i in broadcasts){
-			%><a href=<%="/thread?tid="+broadcasts[i].tid+"&uid="+broadcasts[i].uid%> class="thread_item"><%=broadcasts[i].first_name+" "+broadcasts[i].last_name%></a>&nbsp at &nbsp <%=broadcasts[i].ts%>&nbsp said &nbsp<%=broadcasts[i].msg%><br><%
+			%><li class="customlist"><%=broadcasts[i].first_name+" "+broadcasts[i].last_name%>&nbsp at &nbsp <%=broadcasts[i].ts%>&nbsp said &nbsp<a href=<%="/thread?tid="+broadcasts[i].tid+"&uid="+broadcasts[i].uid%> class="thread_item"><%=broadcasts[i].msg%></a></li><%
 		}
     %>
+    </ul>
 	</div>
 	<div class="footer">talk2</div>
 </body>

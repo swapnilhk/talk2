@@ -26,7 +26,7 @@ app.use(express.session({
 }));
 
 app.get('/', function(req, res){
-    res.render('index',{firstname:'swapnil', lastname: 'kharabe'});
+    res.render('login',{server_message:''});
 });
 
 
@@ -156,7 +156,7 @@ app.get('/recieved_broadcasts', function(req, res){
 	   	});
 	   	connection.connect(function(err){
 			if(!err){
-				var query = connection.query('\
+				var query = connection.query("\
 				SELECT user.uid, first_name, last_name, thread.tid as tid, msg, msg.create_ts as ts\
 				FROM talk.user, talk.thread, talk.thread_msg, talk.msg\
 				WHERE user.uid = thread.initiator\
@@ -164,7 +164,7 @@ app.get('/recieved_broadcasts', function(req, res){
 				AND msg.msg_id = thread_msg.msg_id\
 				AND broadcast_flag = 1\
 				AND thread.responder = ?\
-				ORDER BY ts DESC',[req.session.uid], function(err, result) {
+				ORDER BY ts DESC",[req.session.uid], function(err, result) {
 					if(!err){
 						console.log("Query Successful");
 						res.render('recieved_broadcasts.ejs',{broadcasts:result});
@@ -346,7 +346,7 @@ app.get('/logout', function(req, res){
 app.get('/home', function(req, res){
 	res.render('home.ejs', {
 		user : req.session.user,
-		users : result,
+		users : req.session.users,
 		server_message : ""
 	});
 });

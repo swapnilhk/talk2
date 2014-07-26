@@ -1,6 +1,9 @@
 CREATE DATABASE talk;
 CREATE USER 'talkadmin'@'localhost' IDENTIFIED BY 'password';
 
+CREATE USER 'talkuser'@'localhost' IDENTIFIED BY 'password';
+CREATE USER 'talkuser'@'%' IDENTIFIED BY 'password';
+
 CREATE TABLE `talk`.`user` (
   `uid` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(60) NOT NULL,
@@ -39,8 +42,6 @@ CREATE TABLE talk.thread_msg(
 );
 
 GRANT ALL PRIVILEGES ON talk to 'talkadmin'@'localhost';
-CREATE USER 'talkuser'@'localhost' IDENTIFIED BY 'password';
 GRANT SELECT, INSERT, UPDATE ON talk.* to 'talkuser'@'localhost';
-CREATE USER 'talkuser'@'%' IDENTIFIED BY 'password';
-GRANT SELECT, INSERT, UPDATE ON talk.* to 'talkuser'@'%'
+GRANT SELECT, INSERT, UPDATE ON talk.* to 'talkuser'@'%';
 
