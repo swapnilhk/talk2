@@ -20,26 +20,26 @@
 
 
 
-    <div class="content">
-	    <div class="header"><h2>You Initiated Following Threads</h2></div>
+    <div class="home_form">
+	    <div class="servmsg"><h2>You Initiated Following Threads</h2></div>
     	<%
 			var i;
 			for(i in result){
-				%><a href=<%="/thread?tid="+result[i].tid+"&uid="+result[i].uid%> class="thread_item"><%=result[i].first_name+" "+result[i].last_name%></a><br><%
+				%><div class="listelement"><a href=<%="/thread?tid="+result[i].tid+"&uid="+result[i].uid%> class="thread_item"><%=result[i].first_name+" "+result[i].last_name%></a></div><br><%
 			}
     	%>
-		</div>
+	</div>
 	
-		<div class="header"><h2>You Responded to the Following Threads</h2></div>
+	<div class="home_form">
+		<div class="servmsg"><h2>You Responded to the Following Threads</h2></div>
     	<%
 			var i;
 			for(i in result1){
-				%><a href=<%="/thread?tid="+result1[i].tid+"&uid="+result1[i].uid%> class="thread_item"><%=result1[i].first_name+" "+result1[i].last_name%></a><br><%
+				%><div class="listelement"><a href=<%="/thread?tid="+result1[i].tid+"&uid="+result1[i].uid%> class="thread_item"><%=result1[i].first_name+" "+result1[i].last_name%></a></div><br><%
 			}
     	%>
-		</div>
 	</div>
-	<div class="footer">talk2</div>
+	</div>
 	</div>
 	
 </body>

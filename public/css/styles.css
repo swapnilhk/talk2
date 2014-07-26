@@ -142,6 +142,8 @@ div.footer {
     clear: left;
     position:absolute;
 	bottom:0;
+	width:100%;
+	position:relative;
 }
 
 
@@ -332,4 +334,32 @@ li.customlist a.customlist:hover {
   #cssmenu ul li a:before {
     display: none;
   }
+}
+
+.home_form{
+	margin: 10px 10px;
+	padding: 10px 10px;
+	width: 70%;
+	align:center;
+	box-shadow: 10px 10px 5px #888888;
+	margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    background-color: #b0e0e6;
+}
+
+.listelement{
+	color: #333333;
+	font-family: ‘Palatino Linotype’, ‘Book Antiqua’, Palatino, serif;
+	padding:4px 20px; 
+}
+
+.servmsg{
+	color: green;
+	background-color: yellow;
+	padding:4px 4px;
+	text-align: center;
+	font-size: 12px;
+	font-family: 'Roboto', sans-serif;
+	height: 24px;
 }

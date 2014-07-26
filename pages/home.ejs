@@ -4,10 +4,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Talk Home</title>
 <link rel="stylesheet" href="../css/styles.css" media="screen" type="text/css" />
+
+<script>
+function validateField(){
+	$val = $(#broadcast_message).val();
+	if(val = "")
+		return false;
+	else
+		return true;
+}
+</script>
+
 </head>
 <body>
 	<div class="header"><h1>Welcome <%=user%></h1></div>
-	<div><h2><%=server_message%></h2></div>
+	<div class="servmsg"><h2><%=server_message%></h2></div>
 
 		<div id='cssmenu'>
 		<ul>
@@ -20,19 +31,18 @@
 
 
 
-	<form id="home_form" name="home_form" onsubmit="return validateHome()" method="POST" action="/broadcast">
+	<form class="home_form" id="home_form" name="home_form" onsubmit="return validateHome()" method="POST" action="/broadcast">
   	    <div class="content">
 	    <%
 		var i;
 		for(i = 0; i < users.length; i++){
-			%><input type="checkbox" class="checkbox" name="uid" value=<%=users[i].uid%> ><%=users[i].first_name+" "+users[i].last_name%><br><%
+			%><div class="listelement"><input type="checkbox" class="checkbox" name="uid" value=<%=users[i].uid%> ><%=users[i].first_name+" "+users[i].last_name%><br></div><%
 		}
 	    %>
-	    <input type="textarea" name="broadcast_message"/>
-	    <input type="submit" value="Broadcast"/>
+	    <input id="broadcast_message" type="textarea" name="broadcast_message"/>
+	    <input type="submit" value="Broadcast" onsubmit="return validateField();"/>
 	</form>
 	</div>
-	<div class="footer">talk2</div>
 	
 </body>
 </html>

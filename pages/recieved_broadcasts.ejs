@@ -15,16 +15,15 @@
 			<li><a href="/logout">Logout</a></li>
 		</div>
 
-    <div class="customlist">
+    <div class="home_form"">
     <ul>
     <%
 		var i;
 		for(i in broadcasts){
-			%><li class="customlist"><%=broadcasts[i].first_name+" "+broadcasts[i].last_name%>&nbsp at &nbsp <%=broadcasts[i].ts%>&nbsp said &nbsp<a href=<%="/thread?tid="+broadcasts[i].tid+"&uid="+broadcasts[i].uid%> class="thread_item"><%=broadcasts[i].msg%></a></li><%
+			%><div class="listelement"><li class="customlist"><%=broadcasts[i].first_name+" "+broadcasts[i].last_name%>&nbsp at &nbsp <%=broadcasts[i].ts%>&nbsp said &nbsp<a href=<%="/thread?tid="+broadcasts[i].tid+"&uid="+broadcasts[i].uid%> class="thread_item"><%=broadcasts[i].msg%></a></li></div><%
 		}
     %>
     </ul>
 	</div>
-	<div class="footer">talk2</div>
 </body>
 </html>
