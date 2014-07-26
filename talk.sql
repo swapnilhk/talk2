@@ -1,6 +1,5 @@
 CREATE DATABASE talk;
 CREATE USER 'talkadmin'@'localhost' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON talk to 'talkadmin'@'localhost';
 
 CREATE TABLE `talk`.`user` (
   `uid` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -9,7 +8,7 @@ CREATE TABLE `talk`.`user` (
   `first_name` VARCHAR(45) NOT NULL,
   `last_name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`uid`)
-)
+);
 
 CREATE TABLE `talk`.`thread` (
 	tid INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -24,27 +23,24 @@ CREATE TABLE `talk`.`thread` (
 CREATE TABLE `talk`.`msg` (
 	msg_id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
 	msg VARCHAR(500) NOT NULL,
-	seen BOOLEAN NOT NULL DEFAULT 0,
-	tid INTEGER UNSIGNED DEFAULT NULL,
-	sender INTEGER UNSIGNED NOT NULL,	
+	sender INTEGER UNSIGNED NOT NULL,
+	broadcast_flag BOOLEAN NOT NULL DEFAULT 0,
 	create_ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (msg_id),
-	CONSTRAINT fk_msg_sender FOREIGN KEY (sender) REFERENCES user(uid) ON DELETE CASCADE ON UPDATE RESTRICT,
-	CONSTRAINT fk_msg_tid FOREIGN KEY (tid) REFERENCES thread(tid) ON DELETE CASCADE ON UPDATE RESTRICT	
+	CONSTRAINT fk_msg_sender FOREIGN KEY (sender) REFERENCES user(uid) ON DELETE CASCADE ON UPDATE RESTRICT
 );
 
-CREATE TABLE `talk`.`shout` (
+CREATE TABLE talk.thread_msg(
+	tid INTEGER UNSIGNED NOT NULL,
 	msg_id INTEGER UNSIGNED NOT NULL,
-	reciever INTEGER UNSIGNED NOT NULL,
-	PRIMARY KEY (msg_id, reciever),
-	CONSTRAINT fk_shout_msg_id FOREIGN KEY (msg_id) REFERENCES msg(msg_id) ON DELETE CASCADE ON UPDATE RESTRICT,
-	CONSTRAINT fk_shout_reciever FOREIGN KEY (reciever) REFERENCES user(uid) ON DELETE CASCADE ON UPDATE RESTRICT
+	PRIMARY KEY (msg_id, tid),
+	CONSTRAINT fk_thread_msg_msg_id FOREIGN KEY (msg_id) REFERENCES msg(msg_id) ON DELETE CASCADE ON UPDATE RESTRICT,
+	CONSTRAINT fk_thread_msg_tid FOREIGN KEY (tid) REFERENCES thread(tid) ON DELETE CASCADE ON UPDATE RESTRICT
 );
 
+GRANT ALL PRIVILEGES ON talk to 'talkadmin'@'localhost';
 CREATE USER 'talkuser'@'localhost' IDENTIFIED BY 'password';
-GRANT SELECT, INSERT ON talk.* to 'talkuser'@'localhost';
-GRANT UPDATE(password) ON talk.user to 'talkuser'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON talk.* to 'talkuser'@'localhost';
 CREATE USER 'talkuser'@'%' IDENTIFIED BY 'password';
-GRANT SELECT, INSERT ON talk.* TO 'talkuser'@'%'
-GRANT UPDATE(password) ON talk.user TO 'talkuser'@'%';
+GRANT SELECT, INSERT, UPDATE ON talk.* to 'talkuser'@'%'
 

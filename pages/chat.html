@@ -2,33 +2,39 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Talk Home</title>
+<title>Chat</title>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <link rel="stylesheet" href="../css/styles.css" media="screen" type="text/css" />
 <script>
 	$(document).ready(function(){
-		var server = io.connect("http://swapnilhk.kd.io:8080");
-			alert("Connected to server");
-		$('#chatform').submit(function(e){			
+		var server = io.connect("http://localhost:8080");
+		alert("sdq");
+		
+		$('#sendchat').click(function(){	
 			var message = $('#message').val();
-			server.emit('message', {message:message.text});
-			alert("emitted message"+message.text);
+			$("#chat-area").append('<p>'+message+'</p>');
+			server.emit('message', {'message':message});
+			alert("message: "+message);
 		});
-	});
-	
+	});	
 </script>
 </head>
 <body>
 	<div id="page-wrap">
 		<h2>Welcome to Chat Page</h2>
-		<a href="/logout">Logout</a><br>
+		<a href="/recieved_broadcasts">Recieved Brodcasts</a><a href="/sent_broadcast">Sent Broadcasts</a><a href="/threads">Threads</a><a href="/logout">Logout</a><br>
 		<p id="name-area"></p>
-		<div id="chat-wrap"><div id="chat-area"></div></div>		
-		<form id="chatform">
+		<div id="chat-wrap">
+			<div id="chat-area">
+			
+			</div>
+			
+		</div>		
+		<div id="chatform">
 			<textarea id="message" id="sendie" maxlength = '100' placeholder="Write something.."></textarea>
-			<input type="submit" id="submit" value="SEND"/>
-		</form>
+			<button id="sendchat">Send</button>
+		</div>
 	</div>
 	
 </body>
